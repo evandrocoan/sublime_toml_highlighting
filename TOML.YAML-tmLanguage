@@ -20,7 +20,7 @@ repository:
       '1': {name: comment.line.number-sign.toml}
       '2': {name: punctuation.definition.comment.toml}
     comment: Comments
-  
+
   tables:
     patterns:
     - name: invalid.illegal.table.array.toml
@@ -56,17 +56,17 @@ repository:
       - include: '#comments'
       - include: '#keys'
       - include: '#illegal'
-      
+
   keys:
     patterns:
     - name: invalid.illegal.noKeyDefined.toml
-      match: ^(\s*=.*)$
+      match: (\s*=.*)$
       comment: Assignments without key are invalid
     - name: invalid.deprecated.noValueGiven.toml
-      match: ^(\s*[A-Za-z_\-][A-Za-z0-9_\-]*\s*=)(?=\s*$)
+      match: (\s*[A-Za-z_\-][A-Za-z0-9_\-]*\s*=)(?=\s*$)
       comment: Assignments without value are unusual
-    - begin: '^\s*([A-Za-z_-][A-Za-z0-9_-]*|".+")\s*(=)\s*'
-      end: ($|(?==))
+    - begin: \s*([A-Za-z_-][A-Za-z0-9_-]*|".+"|'.+'|[0-9]+)\s*(=)\s*
+      end: ($|(?==)|\,|\s*(?=\}))
       beginCaptures:
         '1': {name: keyword.key.toml}
         '2': {name: punctuation.definition.keyValuePair.toml}
@@ -74,10 +74,11 @@ repository:
       - include: '#comments'
       - include: '#dataTypes'
       - include: '#illegal'
-    comment: Key-value pairs
+    comment: Key-value-pairs
 
   dataTypes:
     patterns:
+    - include: '#inlinetable'
     - include: '#array'
     - include: '#string'
     - include: '#dateTime'
@@ -140,6 +141,17 @@ repository:
     - include: '#comments'
     - include: '#dataTypes'
     comment: Array
+
+  inlinetable:
+      begin: (?<!\w)(\{)\s*
+      beginCaptures:
+        '1': {name: punctuation.definition.inlinetable.toml}
+      end: \s*(\})(?!\w)
+      endCaptures:
+        '1': {name: punctuation.definition.inlinetable.toml}
+      patterns:
+      - include: '#keys'
+      - include: '#dataTypes'
 
   illegal:
     match: (.*)

@@ -103,12 +103,21 @@ a=[ 1, 2.0 ] # note: this is NOT ok
 [[Array.of.table]]
 
 [table]
-
-[table]
 key = "value"
 bare_key = "value"
 bare-key = "value"
+1234 = "value"
+
+[inline_tables]
+table1 = { key = "value" }
+table2 = { key1 = "value1", key2 = "value2" }
 
 "127.0.0.1" = "value"
 "character encoding" = "value"
 "ʎǝʞ" = "value"
+'key2' = "value"
+'quoted "value"' = "value"
+
+= "no key name"  # INVALID
+"" = "blank"     # VALID but discouraged
+'' = 'blank'     # VALID but discouraged

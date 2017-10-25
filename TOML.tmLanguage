@@ -107,6 +107,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#inlinetable</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>#array</string>
 				</dict>
 				<dict>
@@ -176,6 +180,40 @@
 			<key>match</key>
 			<string>(.*)</string>
 		</dict>
+		<key>inlinetable</key>
+		<dict>
+			<key>begin</key>
+			<string>(?&lt;!\w)(\{)\s*</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.inlinetable.toml</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\s*(\})(?!\w)</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.inlinetable.toml</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#keys</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#dataTypes</string>
+				</dict>
+			</array>
+		</dict>
 		<key>integer</key>
 		<dict>
 			<key>captures</key>
@@ -194,14 +232,14 @@
 		<key>keys</key>
 		<dict>
 			<key>comment</key>
-			<string>Key-value pairs</string>
+			<string>Key-value-pairs</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>comment</key>
 					<string>Assignments without key are invalid</string>
 					<key>match</key>
-					<string>^(\s*=.*)$</string>
+					<string>(\s*=.*)$</string>
 					<key>name</key>
 					<string>invalid.illegal.noKeyDefined.toml</string>
 				</dict>
@@ -209,13 +247,13 @@
 					<key>comment</key>
 					<string>Assignments without value are unusual</string>
 					<key>match</key>
-					<string>^(\s*[A-Za-z_][A-Za-z0-9_]*\s*=)(?=\s*$)</string>
+					<string>(\s*[A-Za-z_\-][A-Za-z0-9_\-]*\s*=)(?=\s*$)</string>
 					<key>name</key>
 					<string>invalid.deprecated.noValueGiven.toml</string>
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>^\s*([A-Za-z_][A-Za-z0-9_]*)\s*(=)\s*</string>
+					<string>\s*([A-Za-z_-][A-Za-z0-9_-]*|".+"|'.+'|[0-9]+)\s*(=)\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -230,7 +268,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>($|(?==))</string>
+					<string>($|(?==)|\,|\s*(?=\}))</string>
 					<key>patterns</key>
 					<array>
 						<dict>
@@ -316,7 +354,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>^\s*(\[\[)([A-Za-z_][A-Za-z0-9_\.]*)(\]\])\s*</string>
+					<string>^\s*(\[\[)([A-Za-z_\-][A-Za-z0-9_\-\.]*)(\]\])\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -338,7 +376,7 @@
 					<key>comment</key>
 					<string>A named TOML-Table-Array</string>
 					<key>end</key>
-					<string>(?=^\s*\[?\[[A-Za-z_][A-Za-z0-9_\.]*\]\]?)</string>
+					<string>(?=^\s*\[?\[[A-Za-z_\-][A-Za-z0-9_\-\.]*\]\]?)</string>
 					<key>name</key>
 					<string>meta.tag.table.array.toml</string>
 					<key>patterns</key>
@@ -369,7 +407,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>^\s*(\[)([A-Za-z_][A-Za-z0-9_\.]*)(\])\s*</string>
+					<string>^\s*(\[)([A-Za-z_\-][A-Za-z0-9_\-\.]*)(\])\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -391,7 +429,7 @@
 					<key>comment</key>
 					<string>A named TOML-Table</string>
 					<key>end</key>
-					<string>(?=^\s*\[?\[[A-Za-z_][A-Za-z0-9_\.]*\]\]?)</string>
+					<string>(?=^\s*\[?\[[A-Za-z_\-][A-Za-z0-9_\-\.]*\]\]?)</string>
 					<key>name</key>
 					<string>meta.tag.table.toml</string>
 					<key>patterns</key>
